@@ -1,0 +1,45 @@
+﻿@page "/tarefas"
+
+<input placeholder="Alguma tarefa"
+@bind="novaTarefa"
+ @oninput="limpaErro"/>
+
+<button @onclick="AdicionarTarefa" >Adicionar</button>
+
+@if (mostrarMensagemErro)
+{
+    <p style="color: red;">A string não pode ser vazia</p>
+}
+
+<ul>
+    @foreach (var t in tarefas){
+    <li>
+    <input type="checkbox" @bind="t.Concluido"/>
+    @t.Titulo </li>
+    }
+</ul>
+
+@code{
+    private List<Item> tarefas=new();
+
+    private bool mostrarMensagemErro = false;
+    
+    private string? novaTarefa;
+    
+    private void AdicionarTarefa(){
+        if (!string.IsNullOrWhiteSpace(novaTarefa)){
+            tarefas.Add(new Item { Titulo=novaTarefa });
+            novaTarefa = string.Empty;
+            this.mostrarMensagemErro = false;
+        }else
+        {   
+            this.mostrarMensagemErro = true;
+        }
+    }
+
+    private void limpaErro()
+    {
+        this.mostrarMensagemErro = false;
+    }
+
+}
